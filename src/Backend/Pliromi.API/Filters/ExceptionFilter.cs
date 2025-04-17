@@ -41,6 +41,10 @@ public class ExceptionFilter : IExceptionFilter
 				context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
 				context.Result = new UnauthorizedObjectResult(new ResponseError(invalidLoginException.GetErrorMessages()));
 				break;
+			case AlreadyRegisteredException alreadyRegisteredException:
+				context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+				context.Result = new BadRequestObjectResult(new ResponseError(alreadyRegisteredException.GetErrorMessages()));
+				break;
 		}
 		
 	}
@@ -49,6 +53,6 @@ public class ExceptionFilter : IExceptionFilter
 	{
 		
 		context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-		context.Result = new ObjectResult(new ResponseError(context.Exception.Message));
+		context.Result = new ObjectResult(new ResponseError(context.Exception.ToString()));
 	}
 }

@@ -22,24 +22,36 @@ public class AuthenticatedUserFilter: IAsyncAuthorizationFilter
 	{
 			var token = TokenOnRequest(context);
 			var userIdentifier = _accessTokenValidator.ValidateAndGetUserIdentifier(token);
+			Console.WriteLine($"user identifier: {userIdentifier}");
 
 			var existUser = await _repository.ExistActiveUserWithIdentifierAsync(userIdentifier);
 			if (!existUser)
 			{
 				// user without permission access resource
-						context.Result = new UnauthorizedObjectResult(new ResponseError(string.Empty));
+						context.Result = new UnauthorizedObjectResult(new ResponseError("user without permission"));
 			}
 		
 	}
 
 	private static string TokenOnRequest(AuthorizationFilterContext context)
 	{
-		var auth = context.HttpContext.Request.Headers.Authorization.ToString();
-		if (string.IsNullOrWhiteSpace(auth))
-		{
-			// no token
-			throw new UnauthorizedException(string.Empty);
-		}
-		return auth["Bearer".Length..].Trim();
+		var authHeader = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+    
+    if (string.IsNullOrWhiteSpace(authHeader))
+    {
+        throw new UnauthorizedException("Authorization header is missing");
+    }
+
+    const string bearerPrefix = "Bearer ";
+    if (!authHeader.StartsWith(bearerPrefix, StringComparison.OrdinalIgnoreCase))
+    {
+        throw new UnauthorizedException("Authorization header must start with 'Bearer '");
+    }
+
+    // Extract token after Bearer prefix
+    var token = authHeader[bearerPrefix.Length..].Trim();
+
+
+    return token;
 	}
 }

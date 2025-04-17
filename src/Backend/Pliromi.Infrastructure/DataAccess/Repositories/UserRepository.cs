@@ -50,6 +50,13 @@ public class UserRepository : IUserWriteOnlyRepository , IUserReadOnlyRepository
 		return _dbContext.Users.Where(u => u.Email == email).AsNoTracking().FirstOrDefaultAsync();
 	}
 
+	public Task<User?> ActiveUserWithCpfOrEmailOrCnpj(User user)
+	{
+		return _dbContext.Users
+		                 .Where(u => u.IsActive && (u.Cpf == user.Cpf || u.Email == user.Email || u.Cnpj == user.Cnpj)).AsNoTracking()
+		                 .FirstOrDefaultAsync();
+	}
+
 	public async Task<User> GetUser(User user)
 	{
 		return await _dbContext.Users.Where(u => u.Id == user.Id && u.IsActive

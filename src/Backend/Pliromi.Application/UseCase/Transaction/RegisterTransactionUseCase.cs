@@ -45,12 +45,12 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		if (receiverUser is null)
 		{
 			// not found receiver
-			throw new NotFoundUserException(string.Empty);
+			throw new NotFoundUserException("not found receiver");
 		}
 
 		if ((senderUser.Balance - request.Value) < 0)
 		{
-			throw new InsufficientBalanceException(string.Empty);
+			throw new InsufficientBalanceException("insufficient balance");
 		}
 
 		senderUser.Balance =- request.Value;
@@ -79,7 +79,7 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		if (!responseAuthorization.IsSuccessStatusCode)
 		{
 			//unauthorized transaction
-			throw new UnauthorizedTransactionException(string.Empty);
+			throw new UnauthorizedTransactionException("unauthorized transaction");
 		}
 		
 	}
@@ -90,7 +90,5 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		{
 			throw new ErrorOnValidationException(validationResult.ToString()!);
 		}
-
-
 	}
 }

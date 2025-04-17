@@ -3,7 +3,7 @@ namespace Pliromi.Domain.Entities;
 public class User  
 {
 	public Guid Id { get;  set; }
-	public bool IsActive { get;  set; } = false;
+	public bool IsActive { get;  set; } = true;
 	public string Fullname { get;  set; } = string.Empty;
 	public decimal Balance { get;  set; }
 	public string Email { get;  set; } = string.Empty;

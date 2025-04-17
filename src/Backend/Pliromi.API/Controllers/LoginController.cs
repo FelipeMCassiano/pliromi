@@ -12,7 +12,7 @@ public class LoginController : ControllerBase
 {
 	[HttpPost]
 	[ProducesResponseType(typeof(ResponseRegister), StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(ResponseRegister), StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(typeof(ResponseError), StatusCodes.Status401Unauthorized)]
 	public async Task<ActionResult> Login([FromBody] RequestLogin request, [FromServices] ILoginUseCase useCase)
 	{
 		var response = await useCase.Execute(request);

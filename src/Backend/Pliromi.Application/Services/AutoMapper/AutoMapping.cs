@@ -14,7 +14,7 @@ public class AutoMapping:Profile
 	private void RequestToDomain()
 	{
 		CreateMap<RequestRegisterUser, User>()
-			.ForMember(dest => dest.Email, opt => opt.Ignore());
+			.ForMember(dest => dest.Password, opt => opt.Ignore());
 		CreateMap<RequestRegisterTransaction, ReceiverDataForTransaction>();
 	}
 }

@@ -5,8 +5,6 @@ using Pliromi.Application;
 using Pliromi.Domain.Security.Tokens;
 using Pliromi.Infrastructure;
 
-const string AUTHENTICATION_TYPE = "Bearer";
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -23,41 +21,34 @@ builder.Services.AddHttpClient();
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 
+const string AUTHENTICATION_TYPE = "Bearer";
+
 builder.Services.AddSwaggerGen(options =>
 {
-	options.AddSecurityDefinition(AUTHENTICATION_TYPE, new OpenApiSecurityScheme
-	{
-		Description =
-			@"JWT Authorization header using the Bearer scheme.
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      Example: 'Bearer 12345abcdef'",
-		Name = "Authorization",
-		In = ParameterLocation.Header,
-		Type = SecuritySchemeType
-			.ApiKey,
-		Scheme = AUTHENTICATION_TYPE
-	});
+    options.AddSecurityDefinition(AUTHENTICATION_TYPE, new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http, 
+        Scheme = AUTHENTICATION_TYPE,
+        BearerFormat = "JWT" 
+    });
 
-
-	options.AddSecurityRequirement(new OpenApiSecurityRequirement
-		{
-			{
-				new OpenApiSecurityScheme
-				{
-					Reference = new OpenApiReference
-					{
-						Type = ReferenceType
-							.SecurityScheme,
-						Id = AUTHENTICATION_TYPE
-					},
-					Scheme = "oauth2",
-					Name = AUTHENTICATION_TYPE,
-					In = ParameterLocation.Header
-				},
-				new List<string>()
-			}
-		}
-	);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = AUTHENTICATION_TYPE
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 var app = builder.Build();

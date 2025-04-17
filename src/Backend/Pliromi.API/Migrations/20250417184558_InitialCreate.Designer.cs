@@ -12,7 +12,7 @@ using Pliromi.Infrastructure.DataAccess;
 namespace Pliromi.API.Migrations
 {
     [DbContext(typeof(PliromiDbContext))]
-    [Migration("20250417133855_InitialCreate")]
+    [Migration("20250417184558_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

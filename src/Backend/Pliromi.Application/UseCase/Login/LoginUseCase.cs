@@ -28,10 +28,9 @@ public class LoginUseCase : ILoginUseCase
 		Validate(request);
 		
 		var user = await _userReadOnlyRepository.GetUserByEmail(request.Email);
-		if (user == null ||_passwordEncrypter.IsValid(request.Password, user.Password))
+		if (user == null ||!_passwordEncrypter.IsValid(request.Password, user.Password))
 		{
-			// invalid login exception
-			throw new InvalidLoginException(string.Empty);
+			throw new InvalidLoginException("invalid credentials");
 		}
 
 		return new ResponseRegister()

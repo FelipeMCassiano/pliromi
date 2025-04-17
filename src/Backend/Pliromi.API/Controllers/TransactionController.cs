@@ -16,7 +16,7 @@ public class TransactionController: ControllerBase
 	// add unprocessable entity status code
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<ActionResult> Post([FromServices] IRegisterTransactionUseCase useCase,[FromBody] RequestRegisterTransaction transaction)
 	{
 		await useCase.Execute(transaction );
