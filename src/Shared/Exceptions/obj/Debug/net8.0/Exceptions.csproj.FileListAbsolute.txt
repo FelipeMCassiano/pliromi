@@ -9,3 +9,4 @@
 /home/felipe/projects/Pliromi/src/Shared/Exceptions/obj/Debug/net8.0/refint/Exceptions.dll
 /home/felipe/projects/Pliromi/src/Shared/Exceptions/obj/Debug/net8.0/Exceptions.pdb
 /home/felipe/projects/Pliromi/src/Shared/Exceptions/obj/Debug/net8.0/ref/Exceptions.dll
+/home/felipe/projects/Pliromi/src/Shared/Exceptions/obj/Debug/net8.0/Exceptions.sourcelink.json

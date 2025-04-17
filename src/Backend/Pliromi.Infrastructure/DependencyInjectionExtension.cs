@@ -30,7 +30,7 @@ public static class DependencyInjectionExtension
 		var connectionString = configuration.GetConnectionString("Connection");
 		services.AddDbContext<PliromiDbContext>(options =>
 		{
-			options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+			options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), b => b.MigrationsAssembly("Pliromi.API"));
 		});
 	}
 

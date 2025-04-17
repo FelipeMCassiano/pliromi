@@ -13,3 +13,6 @@
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Infrastructure/obj/Debug/net8.0/refint/Pliromi.Infrastructure.dll
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Infrastructure/obj/Debug/net8.0/Pliromi.Infrastructure.pdb
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Infrastructure/obj/Debug/net8.0/ref/Pliromi.Infrastructure.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.Infrastructure/obj/Debug/net8.0/Pliromi.Infrastructure.sourcelink.json
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.Infrastructure/bin/Debug/net8.0/Pliromi.Infrastructure.runtimeconfig.json
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.Infrastructure/obj/Debug/net8.0/Pliromi.Infrastructure.genruntimeconfig.cache

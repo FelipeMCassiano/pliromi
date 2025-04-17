@@ -9,3 +9,4 @@
 /home/felipe/projects/Pliromi/src/Shared/Communication/obj/Debug/net8.0/refint/Communication.dll
 /home/felipe/projects/Pliromi/src/Shared/Communication/obj/Debug/net8.0/Communication.pdb
 /home/felipe/projects/Pliromi/src/Shared/Communication/obj/Debug/net8.0/ref/Communication.dll
+/home/felipe/projects/Pliromi/src/Shared/Communication/obj/Debug/net8.0/Communication.sourcelink.json

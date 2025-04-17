@@ -9,3 +9,4 @@
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Domain/obj/Debug/net8.0/refint/Pliromi.Domain.dll
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Domain/obj/Debug/net8.0/Pliromi.Domain.pdb
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Domain/obj/Debug/net8.0/ref/Pliromi.Domain.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.Domain/obj/Debug/net8.0/Pliromi.Domain.sourcelink.json

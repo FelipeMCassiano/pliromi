@@ -17,3 +17,4 @@
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Application/obj/Debug/net8.0/refint/Pliromi.Application.dll
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Application/obj/Debug/net8.0/Pliromi.Application.pdb
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.Application/obj/Debug/net8.0/ref/Pliromi.Application.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.Application/obj/Debug/net8.0/Pliromi.Application.sourcelink.json
