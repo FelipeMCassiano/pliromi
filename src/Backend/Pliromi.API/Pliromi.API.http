@@ -1,0 +1,6 @@
+@Pliromi.API_HostAddress = http://localhost:5244
+
+GET {{Pliromi.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

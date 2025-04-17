@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "xKetG1WOToAhCi2E9emCG3Z1ZSgRvMPJH2XUYh9BPYloALgClQZpzrOjPUO49FHVM05lrDJQ77cvsTodpWMZng==",
+  "success": true,
+  "projectFilePath": "/home/felipe/projects/Pliromi/src/Backend/Pliromi.Application/Pliromi.Application.csproj",
+  "expectedPackageFiles": [
+    "/home/felipe/.nuget/packages/automapper/14.0.0/automapper.14.0.0.nupkg.sha512",
+    "/home/felipe/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/felipe/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/home/felipe/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/home/felipe/.nuget/packages/validot/2.6.0/validot.2.6.0.nupkg.sha512",
+    "/home/felipe/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512"
+  ],
+  "logs": []
+}
