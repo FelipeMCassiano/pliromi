@@ -28,6 +28,9 @@ namespace Pliromi.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<Guid>("ReceiverId")
                         .HasColumnType("char(36)");
 
@@ -62,6 +65,9 @@ namespace Pliromi.API.Migrations
                     b.Property<string>("Cpf")
                         .HasMaxLength(11)
                         .HasColumnType("varchar(11)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()

@@ -1,4 +1,5 @@
 using Communication.Responses;
+using Exceptions;
 using Exceptions.ExceptionsBase;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,13 +23,11 @@ public class AuthenticatedUserFilter: IAsyncAuthorizationFilter
 	{
 			var token = TokenOnRequest(context);
 			var userIdentifier = _accessTokenValidator.ValidateAndGetUserIdentifier(token);
-			Console.WriteLine($"user identifier: {userIdentifier}");
 
 			var existUser = await _repository.ExistActiveUserWithIdentifierAsync(userIdentifier);
 			if (!existUser)
 			{
-				// user without permission access resource
-						context.Result = new UnauthorizedObjectResult(new ResponseError("user without permission"));
+						context.Result = new UnauthorizedObjectResult(new ResponseError(PliromiAuthMessagesErrors.UserWithoutPermission));
 			}
 		
 	}
@@ -39,18 +38,16 @@ public class AuthenticatedUserFilter: IAsyncAuthorizationFilter
     
     if (string.IsNullOrWhiteSpace(authHeader))
     {
-        throw new UnauthorizedException("Authorization header is missing");
+        throw new UnauthorizedException(PliromiAuthMessagesErrors.AuthorizationHeaderMissing);
     }
 
     const string bearerPrefix = "Bearer ";
     if (!authHeader.StartsWith(bearerPrefix, StringComparison.OrdinalIgnoreCase))
     {
-        throw new UnauthorizedException("Authorization header must start with 'Bearer '");
+        throw new UnauthorizedException(PliromiAuthMessagesErrors.AuthorizationHeaderInvalid);
     }
 
-    // Extract token after Bearer prefix
     var token = authHeader[bearerPrefix.Length..].Trim();
-
 
     return token;
 	}

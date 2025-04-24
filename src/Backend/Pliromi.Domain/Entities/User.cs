@@ -11,6 +11,7 @@ public class User
 	public string? Cpf { get;  set; }
 	public string? Cnpj { get;  set; }
 	public bool IsStore { get;  set; }
+	public DateTime CreatedOn { get;  set; } = DateTime.UtcNow;
 public Guid UserIdentifier { get;  set; } 
 	public List<Transaction> SentTransactions { get; set; } = [];
 	public List<Transaction> ReceivedTransactions { get; set; } = [];

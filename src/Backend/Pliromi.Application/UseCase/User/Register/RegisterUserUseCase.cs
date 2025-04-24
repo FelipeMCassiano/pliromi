@@ -74,17 +74,17 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 		
 		if (!string.IsNullOrEmpty(existingUser.Cpf) && existingUser.Cpf == requestUser.Cpf)
 		{
-			errors.Add(PliromiUserMessagesErrors.AlreadyRegisteredCpf);
+			errors.Add(PliromiUserMessagesErrors.CpfAlreadyRegistered);
 		}
 
 		if (!string.IsNullOrEmpty(existingUser.Cnpj) && existingUser.Cnpj == requestUser.Cnpj)
 		{
-			errors.Add(PliromiUserMessagesErrors.AlreadyRegisteredCnpj);
+			errors.Add(PliromiUserMessagesErrors.CnpjAlreadyRegistered);
 		}
 
 		if (!string.IsNullOrEmpty(existingUser.Email)&& existingUser.Email == requestUser.Email)
 		{
-			errors.Add(PliromiUserMessagesErrors.AlreadyRegisteredEmail);
+			errors.Add(PliromiUserMessagesErrors.EmailAlreadyRegistered);
 		}
 
 		if (errors.Count != 0)

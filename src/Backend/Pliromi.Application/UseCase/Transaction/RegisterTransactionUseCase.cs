@@ -45,7 +45,7 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		var receiverUser = await _userUpdateOnlyRepository.GetReceiver(receiverData);
 		if (receiverUser is null)
 		{
-			throw new NotFoundUserException(PliromiTransactionMessagesErrors.NotFoundReceiver);
+			throw new NotFoundUserException(PliromiTransactionMessagesErrors.ReceiverNotFound);
 		}
 
 		if ((senderUser.Balance - request.Value) < 0)

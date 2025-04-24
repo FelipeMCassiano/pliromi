@@ -32,6 +32,7 @@ namespace Pliromi.API.Migrations
                     Cnpj = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsStore = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UserIdentifier = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
@@ -47,7 +48,8 @@ namespace Pliromi.API.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Value = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     SenderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ReceiverId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    ReceiverId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CreatedOn = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {

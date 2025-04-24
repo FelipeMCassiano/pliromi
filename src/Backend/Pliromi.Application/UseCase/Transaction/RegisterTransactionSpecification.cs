@@ -25,7 +25,7 @@ public  static class RegisterTransactionSpecification
 			                                                               return values.Count(x =>
 				                                                                      !string.IsNullOrEmpty(x)) ==
 			                                                                      1;
-		                                                               }).WithMessage(PliromiTransactionMessagesErrors.MustProvideOneOf);
+		                                                               }).WithMessage(PliromiTransactionMessagesErrors.MustProvideOneIdentifier);
 			
 		return specification;
 	}

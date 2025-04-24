@@ -12,7 +12,7 @@ using Pliromi.Infrastructure.DataAccess;
 namespace Pliromi.API.Migrations
 {
     [DbContext(typeof(PliromiDbContext))]
-    [Migration("20250417184558_InitialCreate")]
+    [Migration("20250424150241_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -30,6 +30,9 @@ namespace Pliromi.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("ReceiverId")
                         .HasColumnType("char(36)");
@@ -65,6 +68,9 @@ namespace Pliromi.API.Migrations
                     b.Property<string>("Cpf")
                         .HasMaxLength(11)
                         .HasColumnType("varchar(11)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
