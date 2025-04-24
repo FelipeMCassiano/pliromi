@@ -1,13 +1,15 @@
 namespace Exceptions.ExceptionsBase;
 
-public class ErrorOnValidationException : PliromiException 
+public class ErrorOnValidationException : PliromiException
 {
-	public ErrorOnValidationException(string message) : base(message)
+	private readonly List<string> _errors;
+	public ErrorOnValidationException(List<string> messages) : base(String.Empty)
 	{
+		_errors = messages;
 	}
 
 	public override List<string> GetErrorMessages()
 	{
-		return [Message];
+		return _errors;
 	}
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Communication.Requests;
+using Exceptions;
 using Exceptions.ExceptionsBase;
 using Microsoft.Extensions.Options;
 using Pliromi.Application.UseCase.User.Register;
@@ -44,13 +45,12 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		var receiverUser = await _userUpdateOnlyRepository.GetReceiver(receiverData);
 		if (receiverUser is null)
 		{
-			// not found receiver
-			throw new NotFoundUserException("not found receiver");
+			throw new NotFoundUserException(PliromiTransactionMessagesErrors.NotFoundReceiver);
 		}
 
 		if ((senderUser.Balance - request.Value) < 0)
 		{
-			throw new InsufficientBalanceException("insufficient balance");
+			throw new InsufficientBalanceException(PliromiTransactionMessagesErrors.InsufficientBalance);
 		}
 
 		senderUser.Balance =- request.Value;
@@ -64,8 +64,6 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		};
 		await _transactionWriteOnlyRepository.AddAsync(transaction);
 	
-		await AuthorizeRequest();	
-	
 	    await _unitOfWork.Commit();	
 	    
 	    // implement a real service
@@ -73,22 +71,14 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 	}
 
 
-	private  async Task AuthorizeRequest()
-	{
-			var responseAuthorization = await _httpClient.GetAsync("https://util.devi.tools/api/v2/authorize");
-		if (!responseAuthorization.IsSuccessStatusCode)
-		{
-			//unauthorized transaction
-			throw new UnauthorizedTransactionException("unauthorized transaction");
-		}
-		
-	}
 	private void Validate(RequestRegisterTransaction request)
 	{
 		var validationResult = _validator.Validate(request);
-		if (validationResult.AnyErrors)
-		{
-			throw new ErrorOnValidationException(validationResult.ToString()!);
-		}
+		
+		if (!validationResult.AnyErrors) return;
+		
+		var errors = validationResult.MessageMap.Values.SelectMany(list => list).Distinct().ToList();
+		
+		throw new ErrorOnValidationException(errors);
 	}
 }

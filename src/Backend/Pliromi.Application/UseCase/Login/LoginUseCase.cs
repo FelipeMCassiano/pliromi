@@ -1,5 +1,6 @@
 using Communication.Requests;
 using Communication.Responses;
+using Exceptions;
 using Exceptions.ExceptionsBase;
 using Pliromi.Domain.Repositories;
 using Pliromi.Domain.Security.Cryptography;
@@ -30,7 +31,7 @@ public class LoginUseCase : ILoginUseCase
 		var user = await _userReadOnlyRepository.GetUserByEmail(request.Email);
 		if (user == null ||!_passwordEncrypter.IsValid(request.Password, user.Password))
 		{
-			throw new InvalidLoginException("invalid credentials");
+			throw new InvalidLoginException(PliromiLoginMessagesErrors.InvalidCredentials);
 		}
 
 		return new ResponseRegister()
@@ -43,9 +44,9 @@ public class LoginUseCase : ILoginUseCase
 	private void Validate(RequestLogin request)
 	{
 		var validationResult = _validator.Validate(request);
-		if (validationResult.AnyErrors)
-		{
-			throw new ErrorOnValidationException(validationResult.ToString()!);
-		}
+		if (!validationResult.AnyErrors) return;
+		
+		var errors = validationResult.MessageMap.Values.SelectMany(list => list).Distinct().ToList();
+		throw new ErrorOnValidationException(errors);
 	}
 }

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Communication.Requests;
 using Communication.Responses;
+using Exceptions;
 using Exceptions.ExceptionsBase;
 using Pliromi.Domain.Repositories;
 using Pliromi.Domain.Security.Cryptography;
@@ -36,12 +37,11 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 		
 		var user = _mapper.Map<Domain.Entities.User>(request);
 		
-		var existUser = await _userReadOnlyRepository.ActiveUserWithCpfOrEmailOrCnpj(user);
+		var existingUser = await _userReadOnlyRepository.ActiveUserWithCpfOrEmailOrCnpj(user);
 		
-		if (existUser is not null){
-			VerifyWhichFieldIsDuplicated(existUser, user);
+		if (existingUser is not null){
+			VerifyWhichFieldIsDuplicated(existingUser, user);
 		}
-		Console.WriteLine(request.Password);
 		
 		user.UserIdentifier = Guid.NewGuid();
 		user.Password = _passwordEncrypter.Encrypt(request.Password);
@@ -60,32 +60,31 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 	private  void Validate(RequestRegisterUser request)
 	{
 		var validationResult = _validator.Validate(request);
+
+		if (!validationResult.AnyErrors) return;
 		
-		if (validationResult.AnyErrors)
-		{ 
-			throw new ErrorOnValidationException(validationResult.ToString()!);
-		}
+		var errors = validationResult.MessageMap.Values.SelectMany(list => list).Distinct().ToList();
+		throw new ErrorOnValidationException(errors);
 	}
 
-	private void VerifyWhichFieldIsDuplicated(Domain.Entities.User existingUser,
+	private static void VerifyWhichFieldIsDuplicated(Domain.Entities.User existingUser,
 		Domain.Entities.User requestUser)
 	{
 		var errors = new List<string>();
 		
-		// these messages need to be a universal constant
-		if (!string.IsNullOrEmpty(existingUser.Cpf)&& existingUser.Cpf == requestUser.Cpf)
+		if (!string.IsNullOrEmpty(existingUser.Cpf) && existingUser.Cpf == requestUser.Cpf)
 		{
-			errors.Add("Already Registered Cpf");
+			errors.Add(PliromiUserMessagesErrors.AlreadyRegisteredCpf);
 		}
 
 		if (!string.IsNullOrEmpty(existingUser.Cnpj) && existingUser.Cnpj == requestUser.Cnpj)
 		{
-			errors.Add("Already Registered Cpnj");
+			errors.Add(PliromiUserMessagesErrors.AlreadyRegisteredCnpj);
 		}
 
 		if (!string.IsNullOrEmpty(existingUser.Email)&& existingUser.Email == requestUser.Email)
 		{
-			errors.Add("Already Registered Email");
+			errors.Add(PliromiUserMessagesErrors.AlreadyRegisteredEmail);
 		}
 
 		if (errors.Count != 0)

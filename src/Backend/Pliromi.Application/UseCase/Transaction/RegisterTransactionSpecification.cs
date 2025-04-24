@@ -1,5 +1,6 @@
 using AutoMapper.Execution;
 using Communication.Requests;
+using Exceptions;
 using Exceptions.ExceptionsBase;
 using Validot;
 
@@ -11,6 +12,7 @@ public  static class RegisterTransactionSpecification
 	{
 		Specification<RequestRegisterTransaction> specification = s => s
 		                                                               .Member(m => m.Value, m => m.GreaterThan(0))
+		                                                               .WithMessage(PliromiTransactionMessagesErrors.ValueMustBeGreaterThanZero)
 		                                                               .And()
 		                                                               .Rule(m =>
 		                                                               {
@@ -23,7 +25,7 @@ public  static class RegisterTransactionSpecification
 			                                                               return values.Count(x =>
 				                                                                      !string.IsNullOrEmpty(x)) ==
 			                                                                      1;
-		                                                               });
+		                                                               }).WithMessage(PliromiTransactionMessagesErrors.MustProvideOneOf);
 			
 		return specification;
 	}
