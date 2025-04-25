@@ -41,6 +41,7 @@ public static class DependencyInjectionExtension
 		services.AddScoped<IUserReadOnlyRepository, UserRepository>();
 		services.AddScoped<IUserUpdateOnlyRepository, UserRepository>();
 		services.AddScoped<ITransactionWriteOnlyRepository, TransactionRepository>();
+		services.AddScoped<ITransactionReadOnlyRepository, TransactionRepository>();
 	}
 
 	private static void AddSecurity(IServiceCollection services, IConfiguration configuration)

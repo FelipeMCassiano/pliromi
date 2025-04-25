@@ -22,7 +22,7 @@ namespace Pliromi.API.Migrations
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Fullname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Balance = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Balance = table.Column<int>(type: "int", nullable: false),
                     Email = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
@@ -46,7 +46,7 @@ namespace Pliromi.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Value = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false),
                     SenderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ReceiverId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CreatedOn = table.Column<DateTime>(type: "datetime(6)", nullable: false)

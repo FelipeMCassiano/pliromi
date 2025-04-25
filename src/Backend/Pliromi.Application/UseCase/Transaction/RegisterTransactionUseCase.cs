@@ -53,7 +53,7 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 			throw new InsufficientBalanceException(PliromiTransactionMessagesErrors.InsufficientBalance);
 		}
 
-		senderUser.Balance =- request.Value;
+		senderUser.Balance -= request.Value;
 		receiverUser.Balance += request.Value;
 
 		var transaction = new Domain.Entities.Transaction()
@@ -66,7 +66,7 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 	
 	    await _unitOfWork.Commit();	
 	    
-	    // implement a real service
+	    // implement a real emailing service
 	    await _httpClient.PostAsync("https://util.devi.tools/api/v1/notify", null);
 	}
 

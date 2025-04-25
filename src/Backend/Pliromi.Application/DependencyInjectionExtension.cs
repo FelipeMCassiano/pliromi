@@ -2,6 +2,7 @@ using AutoMapper;
 using Communication.Requests;
 using Microsoft.Extensions.DependencyInjection;
 using Pliromi.Application.Services.AutoMapper;
+using Pliromi.Application.UseCase.Dashboard;
 using Pliromi.Application.UseCase.Login;
 using Pliromi.Application.UseCase.Transaction;
 using Pliromi.Application.UseCase.User.Register;
@@ -31,6 +32,7 @@ public static class DependencyInjectionExtension
 		services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
 		services.AddScoped<IRegisterTransactionUseCase, RegisterTransactionUseCase>();
 		services.AddScoped<ILoginUseCase, LoginUseCase>();
+		services.AddScoped<IDashboardUseCase, DashboardUseCase>();
 	}
 
 	private static void AddValidators(IServiceCollection services)

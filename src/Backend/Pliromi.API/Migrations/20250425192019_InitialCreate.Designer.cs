@@ -12,7 +12,7 @@ using Pliromi.Infrastructure.DataAccess;
 namespace Pliromi.API.Migrations
 {
     [DbContext(typeof(PliromiDbContext))]
-    [Migration("20250424150241_InitialCreate")]
+    [Migration("20250425192019_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,8 +40,8 @@ namespace Pliromi.API.Migrations
                     b.Property<Guid>("SenderId")
                         .HasColumnType("char(36)");
 
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -58,8 +58,8 @@ namespace Pliromi.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<int>("Balance")
+                        .HasColumnType("int");
 
                     b.Property<string>("Cnpj")
                         .HasMaxLength(14)
