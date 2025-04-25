@@ -1,11 +1,14 @@
 using Communication.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Pliromi.API.Attributes;
 using Pliromi.Application.UseCase.Dashboard;
 
 namespace Pliromi.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[AuthenticatedUser]
 public class DashboardController: ControllerBase
 {
 	[HttpGet]
