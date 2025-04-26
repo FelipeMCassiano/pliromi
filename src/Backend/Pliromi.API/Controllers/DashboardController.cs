@@ -1,5 +1,4 @@
 using Communication.Responses;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pliromi.API.Attributes;
 using Pliromi.Application.UseCase.Dashboard;

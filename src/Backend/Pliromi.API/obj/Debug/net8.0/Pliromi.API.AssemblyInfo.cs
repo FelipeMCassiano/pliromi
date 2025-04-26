@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Pliromi.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c56c1e3be6d21e13224548deb6dfa606f92fc38")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+521a07815ea9677f79b2717b2cade459da5b09a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Pliromi.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Pliromi.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

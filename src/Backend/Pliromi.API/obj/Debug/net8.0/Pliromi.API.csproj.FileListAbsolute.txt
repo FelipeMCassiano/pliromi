@@ -124,3 +124,10 @@
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
 /home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/appsettings.Test.json
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/MassTransit.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/MassTransit.Abstractions.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/MassTransit.RabbitMqTransport.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/RabbitMQ.Client.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/AWSSDK.Core.dll
+/home/felipe/projects/Pliromi/src/Backend/Pliromi.API/bin/Debug/net8.0/AWSSDK.SimpleEmail.dll

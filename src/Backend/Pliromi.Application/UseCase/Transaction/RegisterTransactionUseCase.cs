@@ -5,8 +5,10 @@ using Exceptions.ExceptionsBase;
 using Microsoft.Extensions.Options;
 using Pliromi.Application.UseCase.User.Register;
 using Pliromi.Domain.Entities;
+using Pliromi.Domain.Entities.Events;
 using Pliromi.Domain.Repositories;
 using Pliromi.Domain.Services.LoggedUser;
+using Pliromi.Domain.Services.ServiceBus;
 using Validot;
 
 namespace Pliromi.Application.UseCase.Transaction;
@@ -16,20 +18,20 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 	private readonly IUserUpdateOnlyRepository _userUpdateOnlyRepository;
 	private readonly ITransactionWriteOnlyRepository _transactionWriteOnlyRepository;
 	private readonly IUnitOfWork _unitOfWork;
-	private readonly HttpClient _httpClient;
+	private readonly ISendEmailQueue _sendEmailQueue;
 	private readonly IValidator<RequestRegisterTransaction> _validator;
 	private readonly IMapper _mapper;
 	private readonly ILoggedUser _loggedUser;
 
-	public RegisterTransactionUseCase(ITransactionWriteOnlyRepository transactionWriteOnlyRepository, IUnitOfWork unitOfWork, HttpClient httpClient, IValidator<RequestRegisterTransaction> validator, IMapper mapper, ILoggedUser loggedUser, IUserUpdateOnlyRepository userUpdateOnlyRepository)
+	public RegisterTransactionUseCase(ITransactionWriteOnlyRepository transactionWriteOnlyRepository, IUnitOfWork unitOfWork, HttpClient httpClient, IValidator<RequestRegisterTransaction> validator, IMapper mapper, ILoggedUser loggedUser, IUserUpdateOnlyRepository userUpdateOnlyRepository, ISendEmailQueue sendEmailQueue)
 	{
 		_transactionWriteOnlyRepository = transactionWriteOnlyRepository;
 		_unitOfWork = unitOfWork;
-		_httpClient = httpClient;
 		_validator = validator;
 		_mapper = mapper;
 		_loggedUser = loggedUser;
 		_userUpdateOnlyRepository = userUpdateOnlyRepository;
+		_sendEmailQueue = sendEmailQueue;
 	}
 
 	public async Task Execute(RequestRegisterTransaction request)
@@ -66,8 +68,10 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 	
 	    await _unitOfWork.Commit();	
 	    
-	    // implement a real emailing service
-	    await _httpClient.PostAsync("https://util.devi.tools/api/v1/notify", null);
+	    var eventMessage = _mapper.Map<TransactedEventConsumer>(transaction);
+	    eventMessage.Key = receiverData.ReceiverCnpj ?? receiverData.ReceiverEmail ?? receiverData.ReceiverCpf ?? throw new Exception();
+	    
+	    await _sendEmailQueue.SendMessage(eventMessage);
 	}
 
 

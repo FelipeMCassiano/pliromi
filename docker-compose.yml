@@ -10,3 +10,9 @@ services:
             MYSQL_USER: USER
         ports:
             - 3306:3306
+    rabbitmq:
+      image: rabbitmq:3.13-management
+      hostname: rabbitmq
+      ports:
+          - 5672:5672
+          - 15672:15672
