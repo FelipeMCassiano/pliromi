@@ -42,6 +42,7 @@ public class ExceptionFilter : IExceptionFilter
 				context.Result = new UnauthorizedObjectResult(new ResponseError(invalidLoginException.GetErrorMessages()));
 				break;
 			case AlreadyRegisteredException alreadyRegisteredException:
+				Console.WriteLine("got it");
 				context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 				context.Result = new BadRequestObjectResult(new ResponseError(alreadyRegisteredException.GetErrorMessages()));
 				break;

@@ -12,6 +12,7 @@ using Pliromi.Domain.Services.LoggedUser;
 using Pliromi.Domain.Services.ServiceBus;
 using Pliromi.Infrastructure.DataAccess;
 using Pliromi.Infrastructure.DataAccess.Repositories;
+using Pliromi.Infrastructure.Extensions;
 using Pliromi.Infrastructure.Security.Cryptography;
 using Pliromi.Infrastructure.Security.Token.Access;
 using Pliromi.Infrastructure.Security.Token.Access.Generator;
@@ -26,11 +27,16 @@ public static class DependencyInjectionExtension
 {
 	public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
 	{
-		AddDbContext(services, configuration);
 		AddRepositories(services);	
 		AddSecurity(services, configuration);
 		AddLoggedUser(services);
 		AddQueueService(services);
+
+		if (configuration.IsUnitTestEnvironment())
+		{
+			return;
+		}
+		AddDbContext(services, configuration);
 		AddEmailSenderService(services, configuration);
 	}
 

@@ -1,3 +1,5 @@
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using Communication.Requests;
 using Communication.Responses;
@@ -37,7 +39,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 		
 		var user = _mapper.Map<Domain.Entities.User>(request);
 		
-		var existingUser = await _userReadOnlyRepository.ActiveUserWithCpfOrEmailOrCnpj(user);
+		var existingUser = await _userReadOnlyRepository.GetActiveUserByIdentifiersAsync(user);
 		
 		if (existingUser is not null){
 			VerifyWhichFieldIsDuplicated(existingUser, user);
@@ -70,27 +72,24 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 	private static void VerifyWhichFieldIsDuplicated(Domain.Entities.User existingUser,
 		Domain.Entities.User requestUser)
 	{
-		var errors = new List<string>();
 		
-		if (!string.IsNullOrEmpty(existingUser.Cpf) && existingUser.Cpf == requestUser.Cpf)
-		{
-			errors.Add(PliromiUserMessagesErrors.CpfAlreadyRegistered);
-		}
+	var errors = new List<string>();
 
-		if (!string.IsNullOrEmpty(existingUser.Cnpj) && existingUser.Cnpj == requestUser.Cnpj)
-		{
-			errors.Add(PliromiUserMessagesErrors.CnpjAlreadyRegistered);
-		}
+	if ( existingUser.Cpf is not null && existingUser.Cpf.Equals(requestUser.Cpf))
+	{
+		errors.Add(PliromiUserMessagesErrors.CpfAlreadyRegistered);
+	}
 
-		if (!string.IsNullOrEmpty(existingUser.Email)&& existingUser.Email == requestUser.Email)
-		{
-			errors.Add(PliromiUserMessagesErrors.EmailAlreadyRegistered);
-		}
+	if (existingUser.Cnpj != null && existingUser.Cnpj.Equals(requestUser.Cnpj))
+	{
+		errors.Add(PliromiUserMessagesErrors.CnpjAlreadyRegistered);
+	}
 
-		if (errors.Count != 0)
-		{
-			throw new AlreadyRegisteredException(errors);
-		}
-		
+	if (existingUser.Email.Equals(requestUser.Email))
+	{
+		errors.Add(PliromiUserMessagesErrors.EmailAlreadyRegistered);
+	}
+
+    throw new AlreadyRegisteredException(errors);
 	}
 }

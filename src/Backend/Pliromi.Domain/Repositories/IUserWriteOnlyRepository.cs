@@ -5,4 +5,4 @@ namespace Pliromi.Domain.Repositories;
 public interface IUserWriteOnlyRepository
 {
 	Task AddAsync(User user );
-}
+} 
