@@ -14,18 +14,8 @@ public  static class RegisterTransactionSpecification
 		                                                               .Member(m => m.Value, m => m.GreaterThan(0))
 		                                                               .WithMessage(PliromiTransactionMessagesErrors.ValueMustBeGreaterThanZero)
 		                                                               .And()
-		                                                               .Rule(m =>
-		                                                               {
-			                                                               List<string?> values =
-			                                                               [
-				                                                               m.ReceiverCnpj, m.ReceiverCpf,
-				                                                               m.ReceiverEmail
-			                                                               ];
-
-			                                                               return values.Count(x =>
-				                                                                      !string.IsNullOrEmpty(x)) ==
-			                                                                      1;
-		                                                               }).WithMessage(PliromiTransactionMessagesErrors.MustProvideOneIdentifier);
+		                                                               .Member(m => m.PliromiKey, m => m.NotEmpty())
+		                                                               .WithMessage(PliromiTransactionMessagesErrors.PliromiMustBeProvided);
 			
 		return specification;
 	}

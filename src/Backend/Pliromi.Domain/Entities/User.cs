@@ -10,6 +10,8 @@ public class User
 	public string Password { get; set; } = string.Empty;
 	public string? Cpf { get;  set; }
 	public string? Cnpj { get;  set; }
+
+	public PliromiKey PliromiKey { get; set; } = null!;
 	public bool IsStore { get;  set; }
 	public DateTime CreatedOn { get;  set; } = DateTime.UtcNow;
 public Guid UserIdentifier { get;  set; } 

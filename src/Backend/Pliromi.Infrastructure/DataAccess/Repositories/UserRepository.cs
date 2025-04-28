@@ -7,6 +7,7 @@ namespace Pliromi.Infrastructure.DataAccess.Repositories;
 public class UserRepository : IUserWriteOnlyRepository , IUserReadOnlyRepository, IUserUpdateOnlyRepository
 {
 	private readonly PliromiDbContext _dbContext;
+	
 
 	public UserRepository(PliromiDbContext dbContext)
 	{ 
@@ -19,45 +20,34 @@ public class UserRepository : IUserWriteOnlyRepository , IUserReadOnlyRepository
 	}
 
 
-	public Task<User?> GetReceiver(ReceiverDataForTransaction receiver)
+	public Task<User?> GetReceiverByPliromiKey(string pliromiKey)
 	{
-		var query = _dbContext.Users.Where(u => u.IsActive);
-		if (!string.IsNullOrEmpty(receiver.ReceiverCpf))
-		{
-			query = query.Where(u => u.Cpf == receiver.ReceiverCpf);
-		}
-
-		if (!string.IsNullOrEmpty(receiver.ReceiverEmail))
-		{
-			query = query.Where(u => u.Email == receiver.ReceiverEmail);
-		}
-
-		if (!string.IsNullOrEmpty(receiver.ReceiverCnpj))
-		{
-			query = query.Where(u => u.Cnpj == receiver.ReceiverCnpj && u.IsStore);
-		}
-		
-		return query.FirstOrDefaultAsync();
+		return _dbContext.Users.Where(u => u.IsActive && u.PliromiKey.Key == pliromiKey).FirstOrDefaultAsync();
 	}
 
-	public Task<bool> ExistActiveUserWithIdentifierAsync(Guid identifier)
+	public async Task<bool> ExistActiveUserWithIdentifierAsync(Guid identifier)
 	{
-		return _dbContext.Users.Where(u => u.IsActive && u.UserIdentifier == identifier).AsNoTracking().AnyAsync();
+		return await _dbContext.Users.Where(u => u.IsActive && u.UserIdentifier == identifier).AsNoTracking().AnyAsync();
 	}
 
-	public Task<User?> GetUserByEmail(string email)
+	public async Task<User?> GetUserByEmail(string email)
 	{
-		return _dbContext.Users.Where(u => u.Email == email).AsNoTracking().FirstOrDefaultAsync();
+		return await _dbContext.Users.Where(u => u.Email == email).AsNoTracking().FirstOrDefaultAsync();
 	}
 
-	public Task<User?> GetActiveUserByIdentifiersAsync(User user)
+	public async Task<User?> GetActiveUserByIdentifiersAsync(User user)
 	{
-	return _dbContext.Users
+	return await _dbContext.Users
         .AsNoTracking()
         .Where(u => u.IsActive && ( u.Cpf != null && u.Cpf == user.Cpf) || 
                    u.Email == user.Email || 
                    (u.Cnpj != null && u.Cnpj == user.Cnpj))
         .FirstOrDefaultAsync();
+	}
+
+	public async Task<string> GetPliromiKeyByUserId(Guid userId)
+	{
+		return await _dbContext.PliromiKeys.AsNoTracking().Where(p => p.UserId == userId).Select(p => p.Key).FirstAsync();
 	}
 
 	public async Task<User> GetUser(User user)

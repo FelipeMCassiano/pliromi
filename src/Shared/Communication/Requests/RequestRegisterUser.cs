@@ -1,3 +1,5 @@
+using Communication.Enums;
+
 namespace Communication.Requests;
 
 public class RequestRegisterUser
@@ -8,5 +10,6 @@ public class RequestRegisterUser
 	public string FullName { get; set; } = string.Empty;
 	public string? Cpf { get; set; }
 	public string? Cnpj { get; set; }
+	public PliromiKeyType PliromiKeyType { get; set; } 
 	public bool IsStore { get; set; }
 }

@@ -10,13 +10,15 @@ public class DashboardUseCase : IDashboardUseCase
 	private readonly ILoggedUser _loggedUser;
 	private readonly ITransactionReadOnlyRepository _readOnlyRepository;
 	private readonly IMapper _mapper;
+	private readonly IUserReadOnlyRepository _userReadOnlyRepository;
 
  
-	public DashboardUseCase(ILoggedUser loggedUser, ITransactionReadOnlyRepository readOnlyRepository, IMapper mapper)
+	public DashboardUseCase(ILoggedUser loggedUser, ITransactionReadOnlyRepository readOnlyRepository, IMapper mapper, IUserReadOnlyRepository userReadOnlyRepository)
 	{
 		_loggedUser = loggedUser;
 		_readOnlyRepository = readOnlyRepository;
 		_mapper = mapper;
+		_userReadOnlyRepository = userReadOnlyRepository;
 	}
 
 	public async Task<ResponseDashboard> Execute()
@@ -42,6 +44,7 @@ public class DashboardUseCase : IDashboardUseCase
 
 		return new ResponseDashboard()
 		{
+			PliromiKey = await _userReadOnlyRepository.GetPliromiKeyByUserId(loggedUser.Id),
 			Balance = loggedUser.Balance,
 			Income = income,
 			Outcome = outcome,

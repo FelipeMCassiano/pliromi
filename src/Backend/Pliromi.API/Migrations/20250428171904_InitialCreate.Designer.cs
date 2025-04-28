@@ -12,7 +12,7 @@ using Pliromi.Infrastructure.DataAccess;
 namespace Pliromi.API.Migrations
 {
     [DbContext(typeof(PliromiDbContext))]
-    [Migration("20250425192019_InitialCreate")]
+    [Migration("20250428171904_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,30 @@ namespace Pliromi.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("Pliromi.Domain.Entities.PliromiKey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("PliromiKeys");
+                });
 
             modelBuilder.Entity("Pliromi.Domain.Entities.Transaction", b =>
                 {
@@ -111,6 +135,17 @@ namespace Pliromi.API.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Pliromi.Domain.Entities.PliromiKey", b =>
+                {
+                    b.HasOne("Pliromi.Domain.Entities.User", "User")
+                        .WithOne("PliromiKey")
+                        .HasForeignKey("Pliromi.Domain.Entities.PliromiKey", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Pliromi.Domain.Entities.Transaction", b =>
                 {
                     b.HasOne("Pliromi.Domain.Entities.User", "Receiver")
@@ -132,6 +167,9 @@ namespace Pliromi.API.Migrations
 
             modelBuilder.Entity("Pliromi.Domain.Entities.User", b =>
                 {
+                    b.Navigation("PliromiKey")
+                        .IsRequired();
+
                     b.Navigation("ReceivedTransactions");
 
                     b.Navigation("SentTransactions");

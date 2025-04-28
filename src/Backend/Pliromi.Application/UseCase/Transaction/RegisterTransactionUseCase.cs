@@ -23,7 +23,7 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 	private readonly IMapper _mapper;
 	private readonly ILoggedUser _loggedUser;
 
-	public RegisterTransactionUseCase(ITransactionWriteOnlyRepository transactionWriteOnlyRepository, IUnitOfWork unitOfWork, HttpClient httpClient, IValidator<RequestRegisterTransaction> validator, IMapper mapper, ILoggedUser loggedUser, IUserUpdateOnlyRepository userUpdateOnlyRepository, ISendEmailQueue sendEmailQueue)
+	public RegisterTransactionUseCase(ITransactionWriteOnlyRepository transactionWriteOnlyRepository, IUnitOfWork unitOfWork, IValidator<RequestRegisterTransaction> validator, IMapper mapper, ILoggedUser loggedUser, IUserUpdateOnlyRepository userUpdateOnlyRepository, ISendEmailQueue sendEmailQueue)
 	{
 		_transactionWriteOnlyRepository = transactionWriteOnlyRepository;
 		_unitOfWork = unitOfWork;
@@ -42,9 +42,8 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		
 		var senderUser = await _userUpdateOnlyRepository.GetUser(loggedUser); 
 		
-		var receiverData = _mapper.Map<ReceiverDataForTransaction>(request);
+		var receiverUser = await _userUpdateOnlyRepository.GetReceiverByPliromiKey(request.PliromiKey);
 		
-		var receiverUser = await _userUpdateOnlyRepository.GetReceiver(receiverData);
 		if (receiverUser is null)
 		{
 			throw new NotFoundUserException(PliromiTransactionMessagesErrors.ReceiverNotFound);
@@ -69,7 +68,7 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 	    await _unitOfWork.Commit();	
 	    
 	    var eventMessage = _mapper.Map<TransactedEventConsumer>(transaction);
-	    eventMessage.Key = receiverData.ReceiverCnpj ?? receiverData.ReceiverEmail ?? receiverData.ReceiverCpf ?? throw new Exception();
+	    eventMessage.Key = receiverUser.PliromiKey.Key;
 	    
 	    await _sendEmailQueue.SendMessage(eventMessage);
 	}

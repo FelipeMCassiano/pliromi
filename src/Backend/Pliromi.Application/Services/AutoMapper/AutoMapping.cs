@@ -18,8 +18,8 @@ public class AutoMapping:Profile
 	private void RequestToDomain()
 	{
 		CreateMap<RequestRegisterUser, User>()
-			.ForMember(dest => dest.Password, opt => opt.Ignore());
-		CreateMap<RequestRegisterTransaction, ReceiverDataForTransaction>();
+			.ForMember(dest => dest.Password, opt => opt.Ignore())
+			.ForMember(dest => dest.PliromiKey, opt => opt.Ignore());
 	}
 
 	private void EntityToResponse()
@@ -42,8 +42,6 @@ public class AutoMapping:Profile
 			.ForMember(dest => dest.ReceiverName, opt => opt.MapFrom(src => src.Receiver.Fullname))
 			.ForMember(dest => dest.TransactionId, opt => opt.MapFrom(src => src.Id))
 			.ForMember(dest => dest.Key, opt => opt.Ignore());
-		
-		
 		
 	}
 }

@@ -1,10 +1,12 @@
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using Communication.Enums;
 using Communication.Requests;
 using Communication.Responses;
 using Exceptions;
 using Exceptions.ExceptionsBase;
+using Pliromi.Domain.Entities;
 using Pliromi.Domain.Repositories;
 using Pliromi.Domain.Security.Cryptography;
 using Pliromi.Domain.Security.Tokens;
@@ -47,6 +49,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 		
 		user.UserIdentifier = Guid.NewGuid();
 		user.Password = _passwordEncrypter.Encrypt(request.Password);
+		RegisterPliromiKey(user, request);
 		
 		await _userWriteOnlyRepository.AddAsync(user);
 		
@@ -91,5 +94,55 @@ public class RegisterUserUseCase : IRegisterUserUseCase
 	}
 
     throw new AlreadyRegisteredException(errors);
+	}
+
+	private void RegisterPliromiKey(Domain.Entities.User user, RequestRegisterUser request)
+	{
+		switch (request.PliromiKeyType)
+		{
+			case PliromiKeyType.Cpf:
+			{
+				if (request.Cpf is null)
+				{
+					throw new ErrorOnRegisteringPliromiKey(PliromiUserMessagesErrors.CannotRegisterAEmptyCpfAsPliromiKey);
+				}
+
+				user.PliromiKey = new PliromiKey()
+				{
+					Key = request.Cpf,
+					Type = Domain.Enums.PliromiKeyType.Cpf,
+
+				};
+				return;
+			}
+			case PliromiKeyType.Cnpj:
+			{
+				if (request.Cnpj is null)
+				{
+					throw new ErrorOnRegisteringPliromiKey(PliromiUserMessagesErrors.CannotRegisterAEmptyCnpjAsPliromiKey);
+				}
+
+				user.PliromiKey = new PliromiKey()
+				{
+					Type = Domain.Enums.PliromiKeyType.Cnpj,
+					Key = request.Cnpj
+				};
+				return;
+			}
+			case PliromiKeyType.Email:
+				user.PliromiKey = new PliromiKey()
+				{
+					Type = Domain.Enums.PliromiKeyType.Email,
+					Key = request.Email
+				};
+				return;
+			case PliromiKeyType.Random:
+				user.PliromiKey = new PliromiKey()
+				{
+					Type = Domain.Enums.PliromiKeyType.Random,
+					Key = Guid.NewGuid().ToString()
+				};
+				break;
+		}
 	}
 }

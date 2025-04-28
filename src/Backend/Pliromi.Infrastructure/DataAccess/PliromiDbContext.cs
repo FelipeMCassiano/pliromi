@@ -38,4 +38,5 @@ public class PliromiDbContext : DbContext
 	}
 	public DbSet<User> Users { get; set; }
 	public DbSet<Transaction> Transactions { get; set; }
+	public DbSet<PliromiKey> PliromiKeys { get; set; }
 }
