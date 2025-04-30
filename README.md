@@ -26,4 +26,3 @@ git clone https://github.com/FelipeMCassiano/pliromi
 ## Usage 
 1. Start the app with ```bash dotnet run dotnet run --project /Pliromi/src/Backend/Pliromi.API
 2. The api will be accessible and documented at [http://localhost:5085/swagger/index.html](http://localhost:5244/swagger/index.html)
-```
