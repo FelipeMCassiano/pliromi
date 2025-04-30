@@ -8,7 +8,7 @@ namespace WebApi.Test.Dashboard;
 public class DashboardTest : PliromiClassFixture
 {
 	private const string Path = "/dashboard";
-	private Guid _userIdentifier;
+	private readonly Guid _userIdentifier;
 	public DashboardTest(CustomWebApplicationFactory factory) : base(factory)
 	{
 		_userIdentifier = factory.GetUserPersonIdentifier();
