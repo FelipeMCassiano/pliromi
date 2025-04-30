@@ -14,7 +14,7 @@ public static class RequestRegisterUserPersonBuilder
 		       .RuleFor(r => r.Email, (f, r) => f.Internet.Email(r.FullName).ToLower() )
 		       .RuleFor(r => r.Password, f => f.Internet.Password())
 		       .RuleFor(r => r.Cpf, f => new string(f.Person.Cpf().Where(char.IsDigit).ToArray()))
-		       .RuleFor(r => r.Balance, _ => 10000)
+		       .RuleFor(r => r.Balance, _ => PlirmoiTestConstants.UserBalance)
 		       .RuleFor(r => r.IsStore, _ => false)
 		       .RuleFor(r => r.PliromiKeyType, PliromiKeyType.Cpf)
 		       .Generate()

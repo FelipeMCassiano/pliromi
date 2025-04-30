@@ -22,14 +22,19 @@ public  class UserReadOnlyRepositoryBuilder
 		_mock.Setup(x => x.ExistActiveUserWithIdentifierAsync(identifier)).ReturnsAsync(true);
 	}
 
-	public void GetUserByEmail(User user)
+	public void GetUserByEmail(User? user = null)
 	{
+		if (user == null)
+		{
+			_mock.Setup(x => x.GetUserByEmail("falseemail@false.com")).ReturnsAsync(null as User);
+			return;
+		}
 		_mock.Setup(x => x.GetUserByEmail(user.Email)).ReturnsAsync(user);
 	}
 
 	public void ActiveUserWithCpfOrEmailOrCpnj(User user)
 	{
-		_mock.Setup(x => x.GetActiveUserByIdentifiersAsync(user)).ReturnsAsync(user);
+		_mock.Setup(x => x.GetActiveUserByIdentifiersAsync(It.Is<User>(u =>u.Cpf == user.Cpf || u.Email == user.Email || u.Cnpj == user.Cnpj ))).ReturnsAsync(user);
 	}
 	
 }

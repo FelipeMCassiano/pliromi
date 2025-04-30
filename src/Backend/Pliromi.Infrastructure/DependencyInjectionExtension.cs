@@ -30,7 +30,6 @@ public static class DependencyInjectionExtension
 		AddRepositories(services);	
 		AddSecurity(services, configuration);
 		AddLoggedUser(services);
-		AddQueueService(services);
 
 		if (configuration.IsUnitTestEnvironment())
 		{
@@ -38,6 +37,7 @@ public static class DependencyInjectionExtension
 		}
 		AddDbContext(services, configuration);
 		AddEmailSenderService(services, configuration);
+		AddQueueService(services);
 	}
 
 	private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

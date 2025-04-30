@@ -6,4 +6,5 @@ public static class PliromiTransactionMessagesErrors
 	public const string PliromiMustBeProvided = "You must provide the PliromiKey";
 	public const string ReceiverNotFound = "Receiver account not found";
 	public const string InsufficientBalance = "Insufficient account balance";
+	public const string StoreCannotDoTransactions = "Store cannot do transactions";
 }

@@ -1,11 +1,13 @@
 using CommonTestUtilities;
 using CommonTestUtilities.AccessToken;
 using CommonTestUtilities.Cryptography;
+using CommonTestUtilities.Entities;
 using CommonTestUtilities.Mapper;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Validators;
 using Communication.Enums;
+using Communication.Requests;
 using Exceptions;
 using Exceptions.ExceptionsBase;
 using Microsoft.IdentityModel.Tokens;
@@ -90,7 +92,7 @@ public class RegisterUserTest
 	[Fact]
 	public async Task ErrorPersonWithCnpj()
 	{
-		var request = RequestRegisterUserStoreBuilder.Build();
+		var request = RequestRegisterUserPersonBuilder.Build();
 		request.Cnpj = CpfAndCnpjBuilder.Cnpj();
 		
 		var useCase = CreateUseCase();
@@ -122,6 +124,28 @@ public class RegisterUserTest
 		ex.GetErrorMessages().ShouldBe(new []{PliromiUserMessagesErrors.InvalidPliromiKeyType});
 	}
 
+	[Fact]
+	public async Task ErrorAlreadyRegisteredUser()
+	{
+		
+		var (user, _) = UserBuilder.BuildPerson();
+		var request = new RequestRegisterUser()
+		{
+			Email = user.Email,
+			Password = user.Password,
+			FullName = user.Fullname,
+			Cpf = user.Cpf,
+			PliromiKeyType =
+				(PliromiKeyType)PliromiKeyBuilder.Build(user.Cpf!, Pliromi.Domain.Enums.PliromiKeyType.Cpf).Type,
+			Balance = user.Balance,
+			IsStore = user.IsStore
+		};
+		
+		var useCase = CreateUseCase(user);
+		Func<Task> act = async () => await useCase.Execute(request);
+		await act.ShouldThrowAsync<AlreadyRegisteredException>();
+	}
+
 	private static RegisterUserUseCase CreateUseCase(Pliromi.Domain.Entities.User? user = null)
 	{
 		var mapper = MapperBuilder.Build();
@@ -130,11 +154,13 @@ public class RegisterUserTest
 		var repositoryWriteOnly = IUserWriteOnlyRepositoryBuilder.Build();
 		var passwordEncrypter = PasswordEncrypterBuilder.Build();
 		var validator = UserRegisterValidatorBuilder.Build();
-		var accessGenerator = IAccessTokenGeneratorBuilder.Build();
+		var accessGenerator = AccessTokenGeneratorBuilder.Build();
 		if (user is not null)
 		{
 			repositoryReadOnlyBuilder.ActiveUserWithCpfOrEmailOrCpnj(user);
 		}
+		
+		
 		
 		return new RegisterUserUseCase(repositoryWriteOnly, unitOfWork, mapper, validator, accessGenerator,passwordEncrypter, repositoryReadOnlyBuilder.Build());
 	}

@@ -22,7 +22,7 @@ public class UserRepository : IUserWriteOnlyRepository , IUserReadOnlyRepository
 
 	public Task<User?> GetReceiverByPliromiKey(string pliromiKey)
 	{
-		return _dbContext.Users.Where(u => u.IsActive && u.PliromiKey.Key == pliromiKey).FirstOrDefaultAsync();
+		return _dbContext.Users.Include(u => u.PliromiKey).Where(u => u.IsActive && u.PliromiKey.Key == pliromiKey).FirstOrDefaultAsync();
 	}
 
 	public async Task<bool> ExistActiveUserWithIdentifierAsync(Guid identifier)

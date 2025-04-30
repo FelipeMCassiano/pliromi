@@ -21,6 +21,8 @@ public class AuthenticatedUserFilter: IAsyncAuthorizationFilter
 
 	public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
 	{
+		try
+		{
 			var token = TokenOnRequest(context);
 			var userIdentifier = _accessTokenValidator.ValidateAndGetUserIdentifier(token);
 
@@ -29,6 +31,12 @@ public class AuthenticatedUserFilter: IAsyncAuthorizationFilter
 			{
 						context.Result = new UnauthorizedObjectResult(new ResponseError(PliromiAuthMessagesErrors.UserWithoutPermission));
 			}
+		}
+		catch (UnauthorizedException e)
+		{
+			context.Result = new UnauthorizedObjectResult(new ResponseError(e.GetErrorMessages()));
+		}
+			
 		
 	}
 

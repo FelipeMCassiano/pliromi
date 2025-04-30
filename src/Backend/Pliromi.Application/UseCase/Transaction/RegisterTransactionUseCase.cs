@@ -40,7 +40,11 @@ public class RegisterTransactionUseCase : IRegisterTransactionUseCase
 		
 		var loggedUser = await _loggedUser.User();
 		
-		var senderUser = await _userUpdateOnlyRepository.GetUser(loggedUser); 
+		var senderUser = await _userUpdateOnlyRepository.GetUser(loggedUser);
+		if (senderUser.IsStore)
+		{
+			throw new StoreCannotDoTransactionException(PliromiTransactionMessagesErrors.StoreCannotDoTransactions);
+		}
 		
 		var receiverUser = await _userUpdateOnlyRepository.GetReceiverByPliromiKey(request.PliromiKey);
 		

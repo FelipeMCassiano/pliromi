@@ -13,3 +13,14 @@ public class AlreadyRegisteredException : PliromiException
 		return _errors;
 	}
 }
+public class StoreCannotDoTransactionException : PliromiException
+{
+	public StoreCannotDoTransactionException(string message) : base(message)
+	{
+	}
+
+	public override List<string> GetErrorMessages()
+	{
+		return [Message];
+	}
+}
